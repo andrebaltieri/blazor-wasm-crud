@@ -1,0 +1,44 @@
+﻿@page "/"
+@using BlazorWasmCrud.Frontend.Models
+@using BlazorWasmCrud.Frontend.Services
+@inject CategoryService CategoryService
+
+<PageTitle>Home</PageTitle>
+
+<h1>Categories</h1>
+
+<ul>
+    @foreach (var item in _categories)
+    {
+        <li>@item.Title</li>
+    }
+</ul>
+
+<button class="btn btnprimary" @onclick="CreateAsync">
+    Criar
+</button>
+
+<button class="btn btnprimary" @onclick="ListAsync">
+    Listar
+</button>
+
+@code {
+    private List<Category> _categories = new();
+
+    private async Task ListAsync()
+    {
+        _categories = await CategoryService.GetAsync();
+    }
+
+    private async Task CreateAsync()
+    {
+        var category = new Category
+        {
+            Id = 0,
+            Title = "Nova categoria",
+            Description = "Descrição da Categoria"
+        };
+        await CategoryService.CreateAsync(category);
+    }
+
+}
